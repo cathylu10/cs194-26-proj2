@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>CS 194-26 Project 2: Fun with Filters and Frequencies</title>
+<meta charset="UTF-8">
+<meta name="description" content="CS 194-26 Project 2">
+<meta name="author" content="Catherine Lu">
+<link rel="stylesheet" href="style.css">
+
+<body>
+
+    <div class="content">
+        <h1>CS 194-26 Project 2: Fun with Filters and Frequencies</h1>
+        <h3>Catherine Lu, Fall 2020</h3>
+
+        <br><br>
+
+        <h2>Overview</h2>
+        <p>
+            In this project, I worked on various applications of filters in image processing. I used finite difference
+            operators as a simple
+            filter for edge detection with a more complex application in image straightening. I also experimented with
+            Gaussian filters
+            for everything from image sharpening to blending together images and creating Gaussian and Laplacian stacks.
+        </p>
+
+        <h2>Part 1: Fun with Filters</h2>
+
+        <h3>Part 1.1: Finite Difference Operator</h3>
+
+        <div align="center">
+            <img src="data/diff_op.png">
+        </div>
+
+        <p>
+            I used the finite difference operator to generate a gradient magnitude image for this photo of a cameraman.
+            Figures 1.1.1 and 1.1.2 show the partial derivatives of the cameraman image in the x and y directions
+            respectively. To compute the gradient magnitude image from these, I took the magnitude of the gradients at
+            each pixel according to the equation below.
+        </p>
+
+        <div align="center">
+            <img src="data/grad_mag.png">
+        </div>
+
+        <div class="table">
+            <table>
+                <tr>
+                    <td>
+                        <img src="results/conv_x.jpg" />
+                        <figcaption><b>Figure 1.1.1:</b> Partial Derivative in X</figcaption>
+                    </td>
+                    <td>
+                        <img src="results/conv_y.jpg" />
+                        <figcaption><b>Figure 1.1.2:</b> Partial Derivative in Y</figcaption>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <img src="results/grad_mag_cameraman.jpg" />
+                        <figcaption><b>Figure 1.1.3:</b> Gradient Magnitude Image</figcaption>
+                    </td>
+                    <td>
+                        <img src="results/binarized_cameraman.jpg" />
+                        <figcaption><b>Figure 1.1.4:</b> Binarized Edge Image</figcaption>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <p>
+            Figure 1.1.4 shows the resulting binarized image that is obtained by assigning certain values in the
+            gradient magnitude image to 1 and certain values to 0 according to some threshold.
+        </p>
+
+
+        <h3>Part 1.2: Derivative of a Gaussian (DoG) Filter</h3>
+
+        <div align="center">
+            <img src="results/blur_binarized_cameraman.jpg">
+            <figcaption><b>Figure 1.2.1:</b> Binirized Image after Gaussian Blur</figcaption>
+        </div>
+
+        <p>
+            In the figure above, we again have the binarized image of the cameraman, but this time after first applying
+            a gaussian
+            blur to the image. This smooths out and gets rid of some of the noise in the image, creating clearer lines
+            for the edges
+            and removing the noise from the field compared to Figure 1.1.4.
+        </p>
+
+
+        <h3>Part 1.3: Image Straightening</h3>
+
+        <p>
+            In this apart, I've implemented image straightening based on the preference for vertical and horizontal edges 
+            in images. First, I convovled the image with a gaussian filter to get rid of any noise, then computed the partial 
+            derivatives in the x and y directions and used these to compute gradient angles. By repeating this process for
+            a range of possible rotation angles, I used the angle with the highest amount of horizontal and vertical 
+            edges to obtain the straighted image. The images below display some examples of aligned images and the 
+            gradient angle histograms.
+        </p>
+
+        <div class="table">
+            <table>
+                <caption>Facade Image</caption>
+                <tr>
+                    <td>
+                        <img src="data/facade.jpg" />
+                        <figcaption>Facade Original</figcaption>
+                    </td>
+                    <td>
+                        <img src="results/facade_aligned.jpg" />
+                        <figcaption>Straightened Facade</figcaption>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <img src="results/facade_original_angles.png" />
+                        <figcaption>Gradient Angles for Original Facade Image</figcaption>
+                    </td>
+                    <td>
+                        <img src="results/facade_rotated_angles.png" />
+                        <figcaption>Gradient Angles for Straightened Facade Image</figcaption>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="table">
+            <table>
+                <caption>Glass Building Image</caption>
+                <tr>
+                    <td>
+                        <img src="data/glass_unaligned.jpg" />
+                        <figcaption>Glass Building Original</figcaption>
+                    </td>
+                    <td>
+                        <img src="results/glass_result.jpg" />
+                        <figcaption>Straightened Glass Building</figcaption>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <img src="results/glass_original_angles.png" />
+                        <figcaption>Gradient Angles for Original Glass Building Image</figcaption>
+                    </td>
+                    <td>
+                        <img src="results/glass_rotated_angles.png" />
+                        <figcaption>Gradient Angles for Straightened Glass Building Image</figcaption>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="table">
+            <table>
+                <caption>Cat Image</caption>
+                <tr>
+                    <td>
+                        <img src="data/cat_misaligned.jpg" />
+                        <figcaption>Cat Original</figcaption>
+                    </td>
+                    <td>
+                        <img src="results/cat_result.jpg" />
+                        <figcaption>Straightened Cat</figcaption>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <img src="results/cat_original_angles.png" />
+                        <figcaption>Gradient Angles for Original Cat Image</figcaption>
+                    </td>
+                    <td>
+                        <img src="results/cat_rotated_angles.png" />
+                        <figcaption>Gradient Angles for Straightened Cat Image</figcaption>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <p>
+            While this method may work well for many images, it also has some problems. In the example below, there are no 
+            clear horizontal or vertical edges as there are many objects in the image and the perspective of the image
+            makes it so that any originally straight edges should now be slanted in an edge-straighted image.
+        </p>
+
+        <div class="table">
+            <table>
+                <caption>Failure Case: Street Image</caption>
+                <tr>
+                    <td>
+                        <img src="data/street.jpg" />
+                        <figcaption>Street Original</figcaption>
+                    </td>
+                    <td>
+                        <img src="results/street_failure.jpg" />
+                        <figcaption>Rotated Street</figcaption>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <img src="results/street_original_angles.png" />
+                        <figcaption>Gradient Angles for Original Street Image</figcaption>
+                    </td>
+                    <td>
+                        <img src="results/street_rotated_angles.png" />
+                        <figcaption>Gradient Angles for Rotated Street Image</figcaption>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+
+        <h2>Part 2: Fun with Frequencies!</h2>
+
+        <h3>Part 2.1: Image "Sharpening"</h3>
+
+        <div class="table">
+            <table>
+                <tr>
+                    <td>
+                        <img src="data/taj.jpg" />
+                        <figcaption><b>Figure 2.1.1:</b> taj.jpg - Original</figcaption>
+                    </td>
+                    <td>
+                        <img src="results/sharp_taj.jpg" />
+                        <figcaption><b>Figure 2.1.2:</b> taj.jpg - Sharpened</figcaption>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <img src="data/cat.jpeg" />
+                        <figcaption><b>Figure 2.1.3:</b> cat.jpg - Original</figcaption>
+                    </td>
+                    <td>
+                        <img src="results/sharp_cat.jpg" />
+                        <figcaption><b>Figure 2.1.4:</b> cat.jpg - Sharpened </figcaption>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <p>
+            The images in the figures above have been "sharpened" by using a Gaussian kernel to blur the image, then
+            subtracting the blurred image from the original image to obtain only the high frequencies, and adding the
+            high frequencies back in. These operations can be combined into a single convolution using the unsharp
+            mask filter.
+        </p>
+
+        <div class="table">
+            <table>
+                <tr>
+                    <td>
+                        <img src="data/camera_rock.jpg" />
+                        <figcaption><b>Figure 2.1.5:</b> camera_rock.jpg - Original</figcaption>
+                    </td>
+                    <td>
+                        <img src="results/blur_camera_rock.jpg" />
+                        <figcaption><b>Figure 2.1.6:</b> camera_rock.jpg - Blurred </figcaption>
+                    </td>
+                    <td>
+                        <img src="results/sharp_camera_rock.jpg" />
+                        <figcaption><b>Figure 2.1.7:</b> camera_rock.jpg - Sharpened </figcaption>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <p>
+            However, this process does not actually sharpen the image because there is no new information being
+            added in. It only magnifies the existing high frequencies in the image. This is illustrated by the images
+            above where the image is blurred and then the blurred image is sharpened. This does not produce the
+            original image but rather a version of the blurred image with "sharper" edges.
+        </p>
+
+
+        <h3>Part 2.2: Hybrid Images</h3>
+
+        <p>
+            Hybrid images are images that have a different interpretation at different viewing distances. The hybrid
+            images
+            here are generated by taking the high frequencies of one image and overlaying them on the low frequencies of
+            a
+            different image. The resulting image will look like the high frequency image at close distances and look
+            like
+            the low frequency image at far distances. Below are some examples of such hybrid images that show change in
+            age
+            and change in expression at different distances.
+        </p>
+
+        <div class="table">
+            <table>
+                <tr>
+                    <td>
+                        <img src="data/young.jpg" />
+                        <figcaption><b>Figure 2.2.1:</b> Young Man</figcaption>
+                    </td>
+                    <td>
+                        <img src="data/old.jpg" />
+                        <figcaption><b>Figure 2.2.2:</b> Old Man </figcaption>
+                    </td>
+                    <td>
+                        <img src="results/young_old.jpg" />
+                        <figcaption><b>Figure 2.2.3:</b> Young/Old Hybrid </figcaption>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <p>
+            The table of images below show the various stages of Young/Old Man hybrid image in the frequency domain.
+        </p>
+
+        <div class="table">
+            <table>
+                <caption>FFT for Young/Old Man Hybrid Process</caption>
+                <tr>
+                    <td>
+                        <img class="small-images" src="results/fft_young.jpg" />
+                        <figcaption>Young Man FFT</figcaption>
+                    </td>
+                    <td>
+                        <img class="small-images" src="results/fft_old.jpg" />
+                        <figcaption>Old Man FFT</figcaption>
+                    </td>
+                    <td>
+                        <img class="small-images" src="results/fft_high.jpg" />
+                        <figcaption>Young High Frequencies</figcaption>
+                    </td>
+                    <td>
+                        <img class="small-images" src="results/fft_low.jpg" />
+                        <figcaption>Old Low Frequencies</figcaption>
+                    </td>
+                    <td>
+                        <img class="small-images" src="results/fft_result.jpg" />
+                        <figcaption>Young/Old Hybrid FFT</figcaption>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+
+
+        <div class="table">
+            <table>
+                <tr>
+                    <td>
+                        <img src="data/disgust.jpg" />
+                        <figcaption><b>Figure 2.2.4:</b> Disgust Expression</figcaption>
+                    </td>
+                    <td>
+                        <img src="data/surprise.jpg" />
+                        <figcaption><b>Figure 2.2.5:</b> Surprise Expression </figcaption>
+                    </td>
+                    <td>
+                        <img src="results/disgust_surprise_cropped.png" />
+                        <figcaption><b>Figure 2.2.6:</b> Disgust/Surprise Hybrid </figcaption>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <p>
+            The images below show a failure case in generating hybrid images. This example fails because the cat and
+            the dog have very different face shape, so even after aligning the eyes, the rest of the features are
+            nowhere close to matching up. This creates a very messy result.
+        </p>
+
+        <div class="table">
+            <table>
+                <tr>
+                    <td>
+                        <img src="data/other_cat.jpg" />
+                        <figcaption><b>Figure 2.2.7:</b> Cat</figcaption>
+                    </td>
+                    <td>
+                        <img src="data/dog.jpg" />
+                        <figcaption><b>Figure 2.2.8:</b> Dog</figcaption>
+                    </td>
+                    <td>
+                        <img src="results/dog_cat.jpg" />
+                        <figcaption><b>Figure 2.2.9:</b> Cat/Dog Hybrid </figcaption>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <h3>Part 2.3: Gaussian and Laplacian Pyramids</h3>
+
+
+        <div class="table">
+            <table id="lincoln-gauss">
+                <caption>Lincoln and Gala Gaussian Stack</caption>
+                <tr></tr>
+            </table>
+        </div>
+
+        <div class="table">
+            <table id="lincoln-lap">
+                <caption>Lincoln and Gala Laplacian Stack</caption>
+                <tr></tr>
+            </table>
+        </div>
+
+        <p>
+            The first table of images shows a Gaussian stack which is created by blurring successive images with a
+            gaussian filter. The second table of images shows a Laplacian stack which is created by taking the
+            difference
+            between successive images in the Gaussian stack and then appending the last image from the Gaussian image
+            to the bottom of the stack. Thus, the Gaussian stack just contains the original image directly in the stack
+            while for the Laplacian stack, the original image can be obtained by summing together all the images in the
+            stack.
+        </p>
+
+        <div class="table">
+            <table id="hybrid-gauss">
+                <caption>Hybrid Image Gaussian Stack</caption>
+                <tr></tr>
+            </table>
+        </div>
+
+        <div class="table">
+            <table id="hybrid-lap">
+                <caption>Hybrid Image Laplacian Stack</caption>
+                <tr></tr>
+            </table>
+        </div>
+
+        <p>
+            Using the Gaussian and Laplacian stacks, we can also break down the construction of the hybrid images.
+            In the hybrid of the young man and old man the Gaussian stack shows us the old man clearly because we are
+            blurring the image to show only the lower frequencies at each stage of the stack. The Laplacian stack on
+            the other hand shows us the young man clearly initially because it extracts the high frequencies of the
+            image.
+        </p>
+
+        <h3>Part 2.4: Multiresolution Blending</h3>
+
+        <p>
+            In this part of the project, I performed multiresolution by creating laplacian stacks for the two images I was
+            blending together and creating a gaussian stack for a mask of each image. Then I summed the masked images at each 
+            level of the stack to create the resulting blending image. 
+        </p>
+
+        <div class="table">
+            <table>
+                <tr>
+                    <td>
+                        <img src="data/spline/apple.jpeg" />
+                        <figcaption>Apple</figcaption>
+                    </td>
+                    <td>
+                        <img src="data/spline/orange.jpeg" />
+                        <figcaption>Orange</figcaption>
+                    </td>
+                    <td>
+                        <img src="results/oraple.jpg" />
+                        <figcaption>Oraple</figcaption>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="table">
+            <table>
+                <tr>
+                    <td>
+                        <img src="data/sunset.jpg" />
+                        <figcaption>Sunset</figcaption>
+                    </td>
+                    <td>
+                        <img src="data/beach.jpg" />
+                        <figcaption>Beach</figcaption>
+                    </td>
+                    <td>
+                        <img src="results/beach_sunset_clipped.jpg" />
+                        <figcaption>Beach with sunset</figcaption>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="table">
+            <table id="beach-lap">
+                <caption>Beach Sunset Laplacian Stack</caption>
+                <tr></tr>
+            </table>
+        </div>
+
+        <div class="table">
+            <table>
+                <tr>
+                    <td>
+                        <img src="data/night.jpg" />
+                        <figcaption>Night Sky</figcaption>
+                    </td>
+                    <td>
+                        <img src="data/mooncake.png" />
+                        <figcaption>Mooncake</figcaption>
+                    </td>
+                    <td>
+                        <img src="results/mooncake_night_clipped.jpg" />
+                        <figcaption>Mooncake as Moon</figcaption>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+</body>
+</div>
+
+<script src="scripts.js"></script>
+
+</html>

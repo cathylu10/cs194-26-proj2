@@ -1,0 +1,36 @@
+body {
+    margin: 10rem 0;
+}
+
+h1, h2, h3, h4 {
+    text-align: center;
+}
+
+img {
+    max-width: 20rem; 
+    height: auto;
+}
+
+table {
+    border-spacing: 2rem 1rem;
+}
+
+figcaption {
+    text-align: center;
+}
+
+.content {
+    max-width: 70rem;
+    margin: auto;
+}
+
+.table {
+    display: flex;
+    justify-content: center;
+}
+
+.small-images {
+    max-width: 10rem;
+    height: auto;
+}
+
